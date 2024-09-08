@@ -93,7 +93,21 @@ Através do link abaixo é possivel verificar o modelo MER criado do banco de da
 
 ## Rotas
 
-### 5. Usuario
+### 1. Usuario
 
+Vale salientar que, o `email cadastrado ao criar usuario será o email em que será enviado o email quando realizar a criação de livros`.
 
-### 5. Livros
+- **Criação de usuario:** `http://127.0.0.1:8000/user` deve ser executado como um `POST` passando no body do json `name`,`email`,`password`
+- **Login de usuario:** `http://127.0.0.1:8000/login`  deve ser executado como um `POST` passando no body do json `email`,`password`
+
+### 2. Livros
+
+- **Criação de livros:** `http://127.0.0.1:8000/book` deve ser executado como um `POST` passando no body do json `title`,`description`,`user_id`
+- **Visualização de todos os livros:** `http://127.0.0.1:8000/book`  deve ser executado como um `GET`
+- **Visualização de um unico livro:** `http://127.0.0.1:8000/book/{id}`  deve ser executado como um `GET`
+- **Update de livros:** `http://127.0.0.1:8000/book/{id}` deve ser executado como um `PATCH ` passando no body do json `name`,`email`,`password`
+- **Delete de livros :** `http://127.0.0.1:8000/book/{id}`  deve ser executado como um `DELETE`
+
+### 3. Favoritar Livros
+
+- **Favoritar livros:** `http://127.0.0.1:8000/favorite` deve ser executado como um `POST` passando no body do json `user_id`,`book_id`
