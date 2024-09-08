@@ -65,22 +65,35 @@ Alem disso, mantenha os seguintes campos da forma como se encontram pois é um e
 ### 4. Faça o download das dependencias.
 
 Utilizando o seguinte codigo faça o download das dependencias : 
-Composer install
+`Composer install`
 
 ### 5. Gere a chave do jwt token.
 
-Pelo terminal execute o seguinte codigo : php artisan jwt:secret
+Pelo terminal execute o seguinte codigo : `php artisan jwt:secret`
 
 ### 5. Realizar migração do banco de dados
 
 Execute o seguinte codigo no terminal para criar as tabelas necessarias.
-php artisan migrate:refresh
+`php artisan migrate:refresh`
 
 ## Execução do proeto
 
 Para iniciar a api utilize o seguinte codigo no terminal : 
-php artisan serve
+`php artisan serve`
 
 ## Possiveis erros
 
-As vezes pode ocorrer alguns erros com relação ao cache. entao um comando bastante utilizado é o composer clear-cache
+As vezes pode ocorrer alguns erros com relação ao cache. entao um comando bastante utilizado é o `composer clear-cache`
+
+## Modelo Entidade Relacionamento
+
+Através do link abaixo é possivel verificar o modelo MER criado do banco de dados.
+`https://lucid.app/lucidchart/72e8d333-79fe-49a4-9092-e524856c16f3/edit?invitationId=inv_62576926-e70d-44fe-80af-b2d69a8748ab`
+
+
+## Rotas
+
+### 5. Usuario
+
+
+### 5. Livros
