@@ -28,6 +28,8 @@ Seu projeto pode enfrentar alguns erros decorrentes de extensões do PHP. Portan
 - `extension=fileinfo`
 - `extension=pgsql`
 - `extension=pdo_pgsql`
+- `extension=zip`
+
 
 ## Instalação
 
@@ -95,20 +97,20 @@ Através do link abaixo, é possível verificar o modelo MER criado do banco de 
 
 Vale salientar que o `e-mail cadastrado ao criar usuário será o e-mail em que será enviado o e-mail ao criar livros`.
 
-- **Criação de Usuário:** `http://127.0.0.1:8000/user` deve ser executado como um `POST`, passando no body um JSON com :`name`, `email`, `password`.
-- **Login de Usuário:** `http://127.0.0.1:8000/login` deve ser executado como um `POST`, passando no body um JSON com : `email`, `password`.
+- **Criação de Usuário:** `http://127.0.0.1:8000/api/user` deve ser executado como um `POST`, passando no body um JSON com :`name`, `email`, `password`.
+- **Login de Usuário:** `http://127.0.0.1:8000/api/login` deve ser executado como um `POST`, passando no body um JSON com : `email`, `password`.
 
 ### 2. Livros
 
-- **Criação de Livros:** `http://127.0.0.1:8000/book` deve ser executado como um `POST`, passando no body um JSON com : `title`, `description`, `user_id`.
-- **Visualização de Todos os Livros:** `http://127.0.0.1:8000/book` deve ser executado como um `GET`.
-- **Visualização de um Único Livro:** `http://127.0.0.1:8000/book/{id}` deve ser executado como um `GET`.
-- **Atualização de Livros:** `http://127.0.0.1:8000/book/{id}` deve ser executado como um `PATCH`, passando um JSON com : `title`, `description`, `user_id`.
-- **Exclusão de Livros:** `http://127.0.0.1:8000/book/{id}` deve ser executado como um `DELETE`.
+- **Criação de Livros:** `http://127.0.0.1:8000/api/book` deve ser executado como um `POST`, passando no body um JSON com : `title`, `description`, `user_id`.
+- **Visualização de Todos os Livros:** `http://127.0.0.1:8000/api/book` deve ser executado como um `GET`.
+- **Visualização de um Único Livro:** `http://127.0.0.1:8000/api/book/{id}` deve ser executado como um `GET`.
+- **Atualização de Livros:** `http://127.0.0.1:8000/api/book{id}` deve ser executado como um `PATCH`, passando um JSON com : `title`, `description`, `user_id`.
+- **Exclusão de Livros:** `http://127.0.0.1:8000/api/book/{id}` deve ser executado como um `DELETE`.
 
 ### 3. Favoritar Livros
 
-- **Favoritar Livros:** `http://127.0.0.1:8000/favorite` deve ser executado como um `POST`, passando no  um JSON com : `user_id`, `book_id`.
+- **Favoritar Livros:** `http://127.0.0.1:8000/api/favorite` deve ser executado como um `POST`, passando no  um JSON com : `user_id`, `book_id`.
 
 ## Realização dos Testes
 
