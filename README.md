@@ -15,9 +15,8 @@ Este projeto é uma API back-end desenvolvida com Laravel. O objetivo é fornece
 
 ## Requisitos
 
-- PHP >= 8.0
+- PHP >= 8.2
 - Composer
-- Laravel = 11.22.0
 - PostgreSQL
 - Visual Studio Code
 
