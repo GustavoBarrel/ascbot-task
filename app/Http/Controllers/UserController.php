@@ -20,7 +20,7 @@ class UserController
             'password' => 'required|string|min:8',
         ],
         [
-            'name.required' => 'O campo nome é obrigatório.',
+            'name.required' => 'O campo name é obrigatório.',
             'email.required' => 'O campo email é obrigatório.',
             'email.email' => 'Por favor, insira um endereço de email válido.',
             'email.unique' => 'Este email já está em uso.',

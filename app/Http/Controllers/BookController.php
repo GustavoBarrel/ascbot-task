@@ -35,14 +35,14 @@ class BookController
             'user_id' => 'required|integer|exists:users,id',
         ],
         [
-            'title.required' => 'O campo título é obrigatório.',
-            'title.string' => 'O campo título deve ser uma string.',
-            'title.max' => 'O campo título não pode ter mais de 255 caracteres.',
-            'description.required' => 'O campo descrição é obrigatório.',
-            'description.string' => 'O campo descrição deve ser uma string.',
-            'user_id.required' => 'O campo ID do usuário é obrigatório.',
-            'user_id.integer' => 'O campo ID do usuário deve ser um número inteiro.',
-            'user_id.exists' => 'O ID do usuário fornecido não existe na tabela de usuários.',
+            'title.required' => 'O campo title é obrigatório.',
+            'title.string' => 'O campo title deve ser uma string.',
+            'title.max' => 'O campo title não pode ter mais de 255 caracteres.',
+            'description.required' => 'O campo description é obrigatório.',
+            'description.string' => 'O campo description deve ser uma string.',
+            'user_id.required' => 'O campo user_id é obrigatório.',
+            'user_id.integer' => 'O campo user_id deve ser um número inteiro.',
+            'user_id.exists' => 'O user_id fornecido não existe na tabela de usuários.',
         ]);
 
         if ($validator->fails()) {
@@ -55,9 +55,6 @@ class BookController
         $user = User::find($book->user_id);
 
         Mail::to($user->email)->send(new BookCreatedMail($book));
-
-        // Mail::to($user->email)->send(new BookCreatedMail($book));
-        // return 'E-mail enviado com sucesso para ' . $user->name;
 
         return response()->json(['message' => 'Livro criado com sucesso'], 201);
     }
@@ -88,14 +85,14 @@ class BookController
             'user_id' => 'required|integer|exists:users,id',
         ],
         [
-            'title.required' => 'O campo título é obrigatório.',
-            'title.string' => 'O campo título deve ser uma string.',
-            'title.max' => 'O campo título não pode ter mais de 255 caracteres.',
-            'description.required' => 'O campo descrição é obrigatório.',
-            'description.string' => 'O campo descrição deve ser uma string.',
-            'user_id.required' => 'O campo ID do usuário é obrigatório.',
-            'user_id.integer' => 'O campo ID do usuário deve ser um número inteiro.',
-            'user_id.exists' => 'O ID do usuário fornecido não existe na tabela de usuários.',
+            'title.required' => 'O campo title é obrigatório.',
+            'title.string' => 'O campo title deve ser uma string.',
+            'title.max' => 'O campo title não pode ter mais de 255 caracteres.',
+            'description.required' => 'O campo description é obrigatório.',
+            'description.string' => 'O campo description deve ser uma string.',
+            'user_id.required' => 'O campo user_id é obrigatório.',
+            'user_id.integer' => 'O campo user_id deve ser um número inteiro.',
+            'user_id.exists' => 'O user_id fornecido não existe na tabela de usuários.',
         ]);
 
         if ($validator->fails()) {
@@ -117,7 +114,6 @@ class BookController
     /**
      * Remove the specified resource from storage.
      */
-    // usei o estroy pois nao sei como é a regra de negocio da empresa com relação a soft delete
     public function destroy(string $id)
     {
         $book = Book::find($id);
@@ -143,7 +139,7 @@ class BookController
         [
             'book_id.required' => 'O campo book_id é obrigatório.',
             'book_id.exists' => 'O ID do livro fornecido não existe na tabela de livros.',
-            'user_id.required' => 'O campo ID do usuário é obrigatório.',
+            'user_id.required' => 'O campo user_id é obrigatório.',
             'user_id.exists' => 'O ID do usuario fornecido nao existe na tabela de usuários.',
         ]);
         if ($validator->fails()) {
