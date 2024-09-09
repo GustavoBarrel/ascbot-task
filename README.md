@@ -12,7 +12,6 @@ Este projeto é uma API back-end desenvolvida com Laravel. O objetivo é fornece
 - **Login:** Autenticação de usuários para acesso aos recursos protegidos.
 - **CRUD de Livros:** Operações completas para criar, ler, atualizar e deletar informações de livros.
 - **Envio de E-mail:** Capacidade de enviar e-mails a partir da aplicação para diversos fins, como notificações ou confirmações.
-- **Laravel:** Framework acessível e poderoso, oferecendo ferramentas necessárias para aplicações robustas de grande porte.
 
 ## Requisitos
 
