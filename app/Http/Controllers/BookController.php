@@ -6,55 +6,73 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Book;
 use App\Models\Favorite;
+use App\Models\User;
 use App\Jobs\SendBookCreatedEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BookCreatedMail;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Services\BookService;
+use App\Services\favoriteService;
 
 class BookController
 {
 
-    public function index()
+    protected $bookService;
+    protected $favoriteService;
+
+    public function __construct(BookService $bookService,FavoriteService $favoriteService)
     {
-        $books = Book::all();
-        return response()->json($books);
+        $this->bookService = $bookService;
+        $this->favoriteService = $favoriteService;
+
     }
 
+
+    public function index()
+    {
+        $books = $this->bookService->getAllBooks();
+
+        return response()->json($books);
+    }
+    
     /**
      * Show the form for creating a new resource.
      */
     public function store(Request $request)
     {
-        $validatedData = $request->only(['title', 'description','user_id']);
-
+        
+        $validatedData = $request->only(['title', 'description']);
 
         $validator = Validator::make($validatedData, 
         [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'user_id' => 'required|integer|exists:users,id',
         ],
         [
-            'title.required' => 'O campo title é obrigatório.',
+            'title.required' => 'O campo title e obrigatório.',
             'title.string' => 'O campo title deve ser uma string.',
             'title.max' => 'O campo title não pode ter mais de 255 caracteres.',
-            'description.required' => 'O campo description é obrigatório.',
+            'description.required' => 'O campo description e obrigatório.',
             'description.string' => 'O campo description deve ser uma string.',
-            'user_id.required' => 'O campo user_id é obrigatório.',
-            'user_id.integer' => 'O campo user_id deve ser um número inteiro.',
-            'user_id.exists' => 'O user_id fornecido não existe na tabela de usuários.',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => $validator->errors()
-            ], 422);
+                'errorList' => $validator->errors()
+            ], 417);
         }
 
-        $book = Book::create($validatedData);
+        (object)$book = $this->bookService->create((object)$validatedData);
+
+        if(!$book)
+        {
+            return response()->json(['errorList' => 'Falha ao criar livro'], 400);
+        }
+
         $user = User::find($book->user_id);
 
         Mail::to($user->email)->send(new BookCreatedMail($book));
+    
 
         return response()->json(['message' => 'Livro criado com sucesso'], 201);
     }
@@ -64,10 +82,10 @@ class BookController
      */
     public function show(string $id)
     {
-        $book = Book::find($id);
+        $book = $this->bookService->find($id);
 
         if (!$book) {
-            return response()->json(['message' => 'Livro não encontrado'], 404);
+            return response()->json(['errorList' => 'Livro não encontrado'], 404);
         }
 
         return response()->json($book);
@@ -82,85 +100,97 @@ class BookController
         [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'user_id' => 'required|integer|exists:users,id',
         ],
         [
-            'title.required' => 'O campo title é obrigatório.',
+            'title.required' => 'O campo title e obrigatório.',
             'title.string' => 'O campo title deve ser uma string.',
             'title.max' => 'O campo title não pode ter mais de 255 caracteres.',
-            'description.required' => 'O campo description é obrigatório.',
+            'description.required' => 'O campo description e obrigatório.',
             'description.string' => 'O campo description deve ser uma string.',
-            'user_id.required' => 'O campo user_id é obrigatório.',
-            'user_id.integer' => 'O campo user_id deve ser um número inteiro.',
-            'user_id.exists' => 'O user_id fornecido não existe na tabela de usuários.',
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails()) 
+        {
             return response()->json([
                 'message' => $validator->errors()
-            ], 422);
+            ], 417);
         }
 
-        $book = Book::find($id);
+        $book = $this->bookService->find($id);
 
         if (!$book) {
-            return response()->json(['message' => 'Livro não encontrado'], 404);
+            return response()->json(['message' => 'Livro não encontrado'], 403);
         }
 
-        $book->update($request->all());
+        $book = $this->bookService->update($id,(object)$validatedData);
 
-        return response()->json(['message' => 'Livro atualizado com sucesso']);
+        if(!$book)
+        {
+            return response()->json(['message' => 'Não é possivel atualizar um livro de outro usuario.'], 404);
+        }
+
+        return response()->json(['message' => 'Livro atualizado com sucesso'],200);
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $book = Book::find($id);
+        $book = $this->bookService->find($id);
 
-        if (!$book) {
+        if (!$book) 
+        {
             return response()->json(['message' => 'Livro não encontrado'], 404);
         }
 
-        $book->delete();
+        $deletedBook = $this->bookService->delete($id);
 
-        return response()->json(['message' => 'Livro excluído com sucesso']);
+        if(!$deletedBook)
+        {
+            return response()->json(['message' => 'Falha ao excluir livro',404]);
+        }
+
+        return response()->json(['message' => 'Livro excluído com sucesso'],200);
+
     }
     
     public function favorite(Request $request)
     {
-        $validatedData = $request->only(['user_id', 'book_id']);
+        $validatedData = $request->only(['book_id']);
 
         $validator = Validator::make($validatedData, 
         [
-            'user_id' => 'required|exists:users,id',
-            'book_id' => 'required|exists:books,id',
+            'book_id' => 'required|integer|exists:books,id',
         ],
         [
             'book_id.required' => 'O campo book_id é obrigatório.',
+            'book_id.integer' => 'O campo book_id deve ser um inteiro.',
             'book_id.exists' => 'O ID do livro fornecido não existe na tabela de livros.',
-            'user_id.required' => 'O campo user_id é obrigatório.',
-            'user_id.exists' => 'O ID do usuario fornecido nao existe na tabela de usuários.',
         ]);
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+
+        if ($validator->fails()) 
+        {
+            return response()->json(['message' => $validator->errors()], 417);
         }
 
-        $favorite = Favorite::where('user_id', $request->user_id)
-                            ->where('book_id', $request->book_id)
-                            ->first();
-        if ($favorite) 
+
+        $favorite = $this->favoriteService->find($validatedData['book_id']);
+
+        if($favorite) 
         {
-            $favorite->delete();
+            $favorite = $this->favoriteService->delete($validatedData['book_id']);
+
             return response()->json(['message' => 'Livro removido dos favoritos com sucesso']);
         } 
-        else 
+
+        $favoriteCreate = $this->favoriteService->create($validatedData['book_id']);
+
+        if($favoriteCreate)
         {
-            Favorite::create([
-                'user_id' => $request->input('user_id'),
-                'book_id' => $request->input('book_id'),
-            ]);
             return response()->json(['message' => 'Livro adicionado aos favoritos com sucesso'], 201);
         }
+        // so nao salva se der erro no servidor.
+        return response()->json(['message' => 'Falha ao registrar favorito.'], 400);
+        
     }
 }

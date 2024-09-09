@@ -10,21 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController
 {
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
 
-        $user = User::where('email', $credentials['email'])->first();
-
-        if (!$user || !Hash::check($credentials['password'], $user->password)) 
-        {
-            return response()->json(['error' => 'Credenciais Invalidas'], 401);
-        }
-
-        $token = JWTAuth::fromUser($user);
-
-        return response()->json(['token' => $token]);
-    }
 
     public function logout()
     {

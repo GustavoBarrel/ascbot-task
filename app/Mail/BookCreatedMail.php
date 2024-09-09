@@ -30,6 +30,7 @@ class BookCreatedMail extends Mailable
     public function build()
     {
         return $this->view('emails.book_created')
+                    ->subject('Livro Criado Com Sucesso')
                     ->with([
                         'bookTitle' => $this->book->title,
                         'bookDescription' => $this->book->description,
