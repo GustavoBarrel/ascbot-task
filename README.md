@@ -120,4 +120,4 @@ Vale ressaltar que o e-mail cadastrado ao criar um usuário será utilizado para
 
 ### 3. Favoritar Livros
 
-- **Favoritar Livros:** `http://127.0.0.1:8000/api/favorite` deve ser executado como um `POST`, passando um JSON com: `book_id`.
+- **Favoritar Livros:** `http://127.0.0.1:8000/api/favorite` deve ser executado como um `POST`, passando um JSON com: `book_id`.**`é possivel desfavoritar da mesma forma.`**
