@@ -66,24 +66,19 @@ class BookService
 
             DB::beginTransaction();
 
+            // delete de todas as agregações que possuem este book_id
             $favorite = DB::table('favorite')
                                 ->where('book_id', $book->id)
-                                ->where('user_id', $user->id)
-                                ->first();
+                                ->get();
 
             if($favorite)
             {
-                $deleteAgregate = $this->favoriteService->delete($book->id);
+                foreach($favorite AS $item)
+                {
+                    $deleteAgregate = $this->favoriteService->delete($book->id);
+                }
             }
-            // feito para deletar a agregação se existir
-            // $deleteAgregate = $this->favoriteService->delete($book->id);
 
-            // if (!$deleteAgregate) 
-            // {
-            //     throw new \Exception('Erro ao deletar a agregação.');
-            // }
-
-            // Deletar o livro
             if (!$this->bookRepository->delete($book)) 
             {
                 throw new \Exception('Erro ao deletar o livro.');
