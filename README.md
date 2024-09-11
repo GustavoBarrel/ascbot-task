@@ -12,7 +12,6 @@ Este projeto é uma API back-end desenvolvida com Laravel. O objetivo é fornece
 - **Login:** Autenticação de usuários para acesso aos recursos protegidos.
 - **CRUD de Livros:** Operações completas para criar, ler, atualizar e deletar informações de livros.
 - **Envio de E-mail:** Capacidade de enviar e-mails a partir da aplicação para diversos fins, como notificações ou confirmações.
-- **Laravel:** Framework acessível e poderoso, oferecendo ferramentas necessárias para aplicações robustas de grande porte.
 
 ## Requisitos
 
@@ -121,4 +120,4 @@ Vale ressaltar que o e-mail cadastrado ao criar um usuário será utilizado para
 
 ### 3. Favoritar Livros
 
-- **Favoritar Livros:** `http://127.0.0.1:8000/api/favorite` deve ser executado como um `POST`, passando um JSON com: `book_id`.
+- **Favoritar Livros:** `http://127.0.0.1:8000/api/favorite` deve ser executado como um `POST`, passando um JSON com: `book_id`.**`é possivel desfavoritar da mesma forma.`**
